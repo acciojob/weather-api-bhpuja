@@ -1,16 +1,61 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #weatherData {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+    <h1>Weather Application</h1>
+    <button id="getWeatherBtn">Get Current Weather</button>
+    <div id="weatherData"></div>
 
+    <script>
+        // JavaScript Code
+        document.getElementById("getWeatherBtn").addEventListener("click", getWeather);
+
+        async function getWeather() {
+            const apiKey = "your_api_key"; // Replace with your OpenWeatherMap API key
+            const city = "London";
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+            try {
+                // Fetch weather data
+                const response = await fetch(url, {
+                    method: "GET",
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch weather data");
+                }
+
+                // Parse JSON data
+                const data = await response.json();
+
+                // Extract weather description
+                const weatherDescription = data.weather[0].description;
+
+                // Update the DOM
+                document.getElementById("weatherData").textContent =
+                    `Current weather in ${city}: ${weatherDescription}`;
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+                document.getElementById("weatherData").textContent =
+                    "Unable to fetch weather data. Please try again later.";
+            }
+        }
+    </script>
 </body>
-
 </html>
+
